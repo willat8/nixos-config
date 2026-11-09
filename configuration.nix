@@ -4,11 +4,6 @@ let
   jagex-launcher = inputs.jagex-launcher.packages.${pkgs.system}.default; 
 in
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-    ];
-  
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   
@@ -62,25 +57,21 @@ in
   
   services.dbus.enable = true;
   
-  nix.nixPath =
-    options.nix.nixPath.default ++
-    [ "nixpkgs-overlays=/etc/nixos/overlays" ]
-  ;
-  
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.extraOptions = "keep-outputs = true";
   
-  nixpkgs.overlays = with pkgs; [ (self: super: {
-    gphoto2fs = super.gphoto2fs.overrideAttrs (old: {
-                        src = fetchFromGitHub {
-                                owner = "willat8";
-                                repo = "gphotofs";
-                                rev = "lumix";
-                                sha256 = "JrLXIPY5DQfzWqIscxskzgmgBXVoaE43cvpQkRk4CCw=";
-                        };
-      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ autoreconfHook ];
-    } );
-  } ) (import <nixpkgs-overlays>) ];
+  nixpkgs.overlays = [
+    (final: prev: {
+      gphoto2fs = prev.gphoto2fs.overrideAttrs (old: {
+       src = fetchFromGitHub {
+         owner = "willat8";
+         repo = "gphotofs";
+         rev = "lumix";
+         sha256 = "JrLXIPY5DQfzWqIscxskzgmgBXVoaE43cvpQkRk4CCw=";
+        };
+        nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.autoreconfHook ];
+      });
+    })
+  ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: pkg.pname == jagex-launcher.pname;
   
@@ -88,5 +79,5 @@ in
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.binfmt.preferStaticEmulators = true;
   
-  system.stateVersion = "22.05"; # Did you read the comment?
+  system.stateVersion = "22.05";
 }

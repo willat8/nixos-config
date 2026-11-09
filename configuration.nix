@@ -62,7 +62,7 @@ in
   nixpkgs.overlays = [
     (final: prev: {
       gphoto2fs = prev.gphoto2fs.overrideAttrs (old: {
-       src = fetchFromGitHub {
+       src = pkgs.fetchFromGitHub {
          owner = "willat8";
          repo = "gphotofs";
          rev = "lumix";

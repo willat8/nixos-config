@@ -48,6 +48,8 @@ in
   
     HISTSIZE = "";
     HISTFILESIZE = "";
+
+    _JAVA_AWT_WM_NONREPARENTING="1";
   };
   
   programs.niri.enable = true;

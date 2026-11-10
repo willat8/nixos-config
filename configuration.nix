@@ -53,6 +53,9 @@ in
   };
   
   programs.niri.enable = true;
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+  ];
   
   programs.vim.enable = true;
   programs.vim.defaultEditor = true;

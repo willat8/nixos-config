@@ -56,6 +56,7 @@ in
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
   ];
+  services.gnome.gnome-keyring.enable = true;
   
   programs.vim.enable = true;
   programs.vim.defaultEditor = true;

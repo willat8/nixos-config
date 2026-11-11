@@ -1,4 +1,4 @@
-{ pkgs, lib, options, inputs, ... }:
+{ pkgs, inputs, ... }:
 
 let
   jagex-launcher = inputs.jagex-launcher.packages.${pkgs.system}.default; 
@@ -48,15 +48,11 @@ in
   };
   
   programs.niri.enable = true;
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-  ];
+  fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
   services.gnome.gnome-keyring.enable = true;
   
   programs.vim.enable = true;
   programs.vim.defaultEditor = true;
-  
-  services.dbus.enable = true;
   
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   

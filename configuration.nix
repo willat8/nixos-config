@@ -13,7 +13,16 @@ in
   
   i18n.defaultLocale = "en_AU.UTF-8";
   
-  hardware.graphics.enable = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  hardware.enableRedistributableFirmware = true;
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      vpl-gpu-rt
+      intel-compute-runtime
+    ];
+  };
   hardware.bluetooth.enable = true;
   
   users.users.will = {
@@ -45,6 +54,8 @@ in
     HISTFILESIZE = "";
 
     _JAVA_AWT_WM_NONREPARENTING="1";
+
+    LIBVA_DRIVER_NAME = "iHD";
   };
   
   programs.niri.enable = true;
